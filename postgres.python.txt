@@ -1,0 +1,447 @@
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+cur = conn.cursor()
+
+cur.execute("SELECT * FROM students1.list1")
+data1 = cur.fetchall()
+
+cur.execute("SELECT * FROM students2.list2")
+data2 = cur.fetchall()
+
+def verify_data1(row):
+    pass
+
+def verify_data2(row):
+    pass
+
+verified_data1 = []
+for row in data1:
+    if verify_data1(row):
+        verified_data1.append(row)
+
+verified_data2 = []
+for row in data2:
+    if verify_data2(row):
+        verified_data2.append(row)
+
+for row in verified_data1:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+
+for row in verified_data2:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+
+conn.commit()
+cur.close()
+conn.close()
+
+
+=======================================================================================================
+
+import psycopg2
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password=6675
+)
+
+cur = conn.cursor()
+
+cur.execute("SELECT * FROM students1.list1")
+rows1 = cur.fetchall()
+
+cur.execute("SELECT * FROM students2.list2")
+rows2 = cur.fetchall()
+
+for row in rows1:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+
+for row in rows2:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+
+conn.commit()
+cur.close()
+conn.close()
+
+=================================================================================================
+
+
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+cur = conn.cursor()
+
+cur.execute("SELECT * FROM students1.list1")
+data1 = cur.fetchall()
+
+cur.execute("SELECT * FROM students2.list2")
+data2 = cur.fetchall()
+
+verified_data1 = []
+for row in data1:
+    if verify_data1(row):
+        verified_data1.append(row)
+
+verified_data2 = []
+for row in data2:
+    if verify_data1(row):
+        verified_data2.append(row)
+
+for row in verified_data1:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+    
+for row in verified_data2:
+    cur.execute("INSERT INTO students3.test3 VALUES (%s, %s, %s, %s)", row)
+
+conn.commit()
+cur.close()
+conn.close()
+
+
+
+
+
+
+two diffrent table data verified column and showing to other table with name 
+
+
+
+Q1:
+table1 is one table and table2 is secound table so in table1 count want 
+to get the data number of recordes in table2 count dat number of record then we will 
+have two recode values table1 count and table2 count recordes we have to compeare 
+the two tables if it is equal then it should insert into what is different value that 
+shoud be insert into table3
+
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+try:
+   
+    cursor = connection.cursor()
+    
+    
+    cursor.execute("SELECT COUNT(*) FROM students.count1")
+    table1_count = cursor.fetchone()[0]
+    
+    
+    cursor.execute("SELECT COUNT(*) FROM teachers.count2")
+    table2_count = cursor.fetchone()[0]
+    
+    
+    if table1_count == table2_count:
+        
+        cursor.execute("INSERT INTO school.count3 (different_value) VALUES (%s)", (table1_count,))
+        connection.commit()
+        print("Different value inserted into school.count3.")
+    else:
+        print("Table counts are not equal.")
+        
+finally:
+   
+    connection.close()
+
+
+==========================================================
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+source_table = "students.count1"
+target_table = "teachers.count2"
+destination_table = "school.count3"
+
+cur = conn.cursor()
+
+cur.execute(f"SELECT COUNT(*) FROM {source_table}")
+source_count = cur.fetchone()[0]
+
+cur.execute(f"SELECT COUNT(*) FROM {target_table}")
+target_count = cur.fetchone()[0]
+
+cur.execute(f"SELECT COUNT(*) FROM {destination_table}")
+destination_count = cur.fetchone()[0]
+
+cur.close()
+
+if source_count > target_count:
+    overflow_count = source_count - target_count
+    print(f"There are {overflow_count} overflow records in {target_table} that need to be inserted into {destination_table}.")
+    
+elif target_count < source_count:
+    overflow_count = target_count - source_count
+    print(f"There are {overflow_count} overflow records in {source_table} that need to be inserted into {destination_table}.")
+    
+else:
+    print("No overflow data found.")
+
+if overflow_count > 0:
+    cur = conn.cursor()
+    cur.execute(f"INSERT INTO {destination_table} SELECT * FROM {target_table} LIMIT {overflow_count}")
+    conn.commit()
+    cur.close()
+
+conn.close()
+
+
+======================================================================
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+source_table = "students.count1"
+target_table = "teachers.count2"
+destination_table = "school.count3"
+
+cur = conn.cursor()
+
+cur.execute(f"SELECT COUNT(*) FROM {source_table}")
+source_count = cur.fetchone()[0]
+
+cur.execute(f"SELECT COUNT(*) FROM {target_table}")
+target_count = cur.fetchone()[0]
+
+cur.execute(f"SELECT COUNT(*) FROM {destination_table}")
+destination_count = cur.fetchone()[0]
+
+cur.close()
+
+if source_count > target_count:
+    overflow_count = source_count - target_count
+    print(f"There are {overflow_count} overflow records in {source_count} that need to be inserted into {destination_table}.")
+
+elif target_count > source_count:
+    overflow_count = target_count - source_count
+    print(f"There are {overflow_count} overflow records in {target_count} that need to be inserted into {destination_table}.")
+    
+else:
+    print("No overflow data found.")
+
+if overflow_count > 0:
+    cur = conn.cursor()
+    cur.execute(f"INSERT INTO {destination_table} SELECT * FROM {target_table} LIMIT {overflow_count}")
+    conn.commit()
+    cur.close()
+
+conn.close()
+
+
+
+
+
+Q1:
+source_table, source_count, target_table, target_count, count_diff
+source_table(student), source_count(5), target_count(emp), target count(10), count_diff(5)
+source_table(student1), source_count(10), target_count(emp1), target count(5), count_diff(-5)
+
+
+select * from emp;
+select * from dept;
+select (
+select count(*) from dept
+) as total_row_tab1,
+(
+select count(*)
+from Dept
+) as total_rows_tab2
+from dual;
+
+
+select * from students.count1;
+select * from teachers.count2;
+select (
+select count(*) from students.count1
+) as total_row_tab1,
+(
+select count(*)
+from teachers.count2
+) as total_rows_tab2
+
+
+
+
+
+========================================================
+
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+cursor = conn.cursor()
+
+query = """
+    SELECT
+        (SELECT COUNT(*) FROM teachers.count2) AS total_row_tab1,
+        (SELECT COUNT(*) FROM students.count1) AS total_row_tab2,
+        (SELECT COUNT(*) FROM students.count1) - (SELECT COUNT(*) FROM teachers.count2) AS total_row_tab3;
+
+"""
+
+insert_query = """
+    INSERT INTO school.count3 (total_row_tab1, total_row_tab2, total_row_tab3)
+    VALUES (%s, %s, %s);
+"""
+
+try:
+    cursor.execute(query)
+    row = cursor.fetchone()
+    total_row_tab1 = row[0]
+    total_row_tab2 = row[1]
+    total_row_tab3 = row[2]
+    print("Total Row Count (teachers.count2):", total_row_tab1)
+    print("Total Row Count (students.count1):", total_row_tab2)
+    print("Difference:", total_row_tab3)
+    cursor.execute(insert_query, (total_row_tab1, total_row_tab2, total_row_tab3))
+    conn.commit()
+    print("Values inserted into school.count3")
+
+except (Exception, psycopg2.Error) as error:
+    print("Error executing the query:", error)
+
+finally:
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
+=======================================================================================
+
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=5432,
+    database="postgres",
+    user="postgres",
+    password="6675"
+)
+
+cursor = conn.cursor()
+
+query1 = """
+    SELECT
+        (SELECT DISTINCT 'test1.list1' FROM test1.list1) AS source_table,
+        (SELECT COUNT(*) FROM test1.list1) AS source_count,
+        
+        (SELECT DISTINCT 'test2.list2' FROM test2.list2) AS target_table,
+        (SELECT COUNT(*) FROM test2.list2) AS target_count,
+        
+        ((SELECT COUNT(*) FROM test2.list2) - (SELECT COUNT(*) FROM test1.list1)) AS count_diff;
+"""
+
+insert_query1 = """
+    INSERT INTO school.count3 (source_table, source_count, target_table, target_count, count_diff)
+    VALUES (%s, %s, %s, %s, %s);
+"""
+
+query2 = """
+    SELECT
+        (SELECT DISTINCT 'teachers.count2' FROM teachers.count2) AS source_table,
+        (SELECT COUNT(*) FROM teachers.count2) AS source_count,
+        
+        (SELECT DISTINCT 'students.count1' FROM students.count1) AS target_table,
+        (SELECT COUNT(*) FROM students.count1) AS target_count,
+    
+        ((SELECT COUNT(*) FROM students.count1) - (SELECT COUNT(*) FROM teachers.count2)) AS count_diff;
+"""      
+
+insert_query2 = """
+    INSERT INTO school.count3 (source_table, source_count, target_table, target_count, count_diff)
+    VALUES (%s, %s, %s, %s, %s);
+"""
+
+try:
+    
+    cursor.execute(query1)
+    row1 = cursor.fetchone()
+    source_table1 = row1[0]
+    source_count1 = row1[1]
+    target_table1 = row1[2]
+    target_count1 = row1[3]
+    count_diff1 = row1[4]
+    
+    print("test1:", source_table1)
+    print("Total Row Count (test1.list1):", source_count1)
+    print("test2:", target_table1)
+    print("Total Row Count (test2.list2):", target_count1)
+    print("Difference:", count_diff1)
+    
+  
+    cursor.execute(insert_query1, (source_table1, source_count1, target_table1, target_count1, count_diff1))
+    conn.commit()
+    print("Values inserted into school.count3 for query1")
+
+    
+    cursor.execute(query2)
+    row2 = cursor.fetchone()
+    source_table2 = row2[0]
+    source_count2 = row2[1]
+    target_table2 = row2[2]
+    target_count2 = row2[3]
+    count_diff2 = row2[4]
+    
+    print("teachers:", source_table2)
+    print("Total Row Count (teachers.count2):", source_count2)
+    print("students:", target_table2)
+    print("Total Row Count (students.count1):", target_count2)
+    print("Difference:", count_diff2)
+    
+    
+    cursor.execute(insert_query2, (source_table2, source_count2, target_table2, target_count2, count_diff2))
+    conn.commit()
+    print("Values inserted into school.count3 for query2")
+
+except (Exception, psycopg2.Error) as error:
+    print("Error executing the query:", error)
+
+finally:
+    if cursor:
+        cursor.close()
+    if conn:
+        conn.close()
+
+
